@@ -1,0 +1,45 @@
+{
+  "name": "bolt-test-automation",
+  "version": "1.0.0",
+  "description": "Comprehensive Playwright test automation suite for Bolt application",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:smoke": "playwright test tests/e2e/smoke",
+    "test:critical": "playwright test tests/e2e/critical",
+    "test:regression": "playwright test tests/e2e/regression",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:staging": "playwright test --config=../playwright-config/playwright.staging.config.ts",
+    "test:prod": "playwright test --config=../playwright-config/playwright.prod.config.ts",
+    "test:report": "playwright show-report reports/playwright-html-report",
+    "test:trace": "playwright show-trace",
+    "test:codegen": "playwright codegen",
+    "lint": "eslint **/*.ts",
+    "lint:fix": "eslint **/*.ts --fix",
+    "format": "prettier --write **/*.ts",
+    "format:check": "prettier --check **/*.ts",
+    "install:browsers": "playwright install --with-deps"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.0.3",
+    "@playwright/test": "^1.48.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "@typescript-eslint/eslint-plugin": "^8.14.0",
+    "@typescript-eslint/parser": "^8.14.0",
+    "eslint": "^9.14.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
