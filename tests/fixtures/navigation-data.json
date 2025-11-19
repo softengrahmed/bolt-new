@@ -1,0 +1,46 @@
+{
+  "navigationItems": [
+    {
+      "name": "Home",
+      "url": "/",
+      "visible": true,
+      "requiresAuth": false
+    },
+    {
+      "name": "Dashboard",
+      "url": "/dashboard",
+      "visible": true,
+      "requiresAuth": true
+    },
+    {
+      "name": "Settings",
+      "url": "/settings",
+      "visible": true,
+      "requiresAuth": true
+    },
+    {
+      "name": "Profile",
+      "url": "/profile",
+      "visible": true,
+      "requiresAuth": true
+    }
+  ],
+  "footerLinks": [
+    {
+      "name": "About",
+      "url": "/about"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact"
+    },
+    {
+      "name": "Privacy Policy",
+      "url": "/privacy"
+    },
+    {
+      "name": "Terms of Service",
+      "url": "/terms"
+    }
+  ]
+}

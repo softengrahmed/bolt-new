@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "type": "admin",
+      "username": "admin@bolt.test",
+      "password": "Admin@123",
+      "email": "admin@bolt.test",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "administrator"
+    },
+    {
+      "type": "standard",
+      "username": "user@bolt.test",
+      "password": "User@123",
+      "email": "user@bolt.test",
+      "firstName": "Standard",
+      "lastName": "User",
+      "role": "user"
+    },
+    {
+      "type": "guest",
+      "username": "guest@bolt.test",
+      "password": "Guest@123",
+      "email": "guest@bolt.test",
+      "firstName": "Guest",
+      "lastName": "User",
+      "role": "guest"
+    },
+    {
+      "type": "developer",
+      "username": "dev@bolt.test",
+      "password": "Dev@123",
+      "email": "dev@bolt.test",
+      "firstName": "Developer",
+      "lastName": "User",
+      "role": "developer"
+    }
+  ]
+}

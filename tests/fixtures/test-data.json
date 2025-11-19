@@ -1,0 +1,35 @@
+{
+  "testData": {
+    "application": {
+      "name": "Bolt New",
+      "version": "1.0.0",
+      "environment": "staging"
+    },
+    "validationMessages": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPassword": "Password must be at least 8 characters",
+      "loginFailed": "Invalid credentials"
+    },
+    "timeouts": {
+      "short": 5000,
+      "medium": 10000,
+      "long": 30000
+    },
+    "sampleContent": {
+      "shortText": "This is a test",
+      "longText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "specialCharacters": "!@#$%^&*()_+-=[]{}|;:',.<>?/",
+      "numbers": "1234567890",
+      "email": "test@example.com",
+      "url": "https://www.example.com"
+    },
+    "testUrls": {
+      "home": "/",
+      "login": "/login",
+      "dashboard": "/dashboard",
+      "settings": "/settings",
+      "profile": "/profile"
+    }
+  }
+}
