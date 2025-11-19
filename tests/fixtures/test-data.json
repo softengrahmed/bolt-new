@@ -1,0 +1,31 @@
+{
+  "sampleMessages": [
+    "Hello, how are you?",
+    "Can you help me with a coding question?",
+    "What's the weather like today?",
+    "Tell me a joke"
+  ],
+  "testProjects": [
+    {
+      "name": "Sample Project 1",
+      "description": "This is a test project for automation",
+      "technology": "React"
+    },
+    {
+      "name": "Sample Project 2",
+      "description": "Another test project",
+      "technology": "Vue"
+    }
+  ],
+  "environmentUrls": {
+    "local": "http://localhost:5173",
+    "staging": "https://staging.example.com",
+    "production": "https://app.example.com"
+  },
+  "testConfiguration": {
+    "defaultTimeout": 30000,
+    "retryAttempts": 3,
+    "screenshotOnFailure": true,
+    "videoOnFailure": true
+  }
+}

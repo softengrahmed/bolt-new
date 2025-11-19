@@ -1,0 +1,41 @@
+{
+  "testUsers": [
+    {
+      "id": "user-001",
+      "username": "testuser1",
+      "email": "testuser1@example.com",
+      "password": "Test@1234",
+      "firstName": "Test",
+      "lastName": "User One",
+      "role": "user"
+    },
+    {
+      "id": "user-002",
+      "username": "testuser2",
+      "email": "testuser2@example.com",
+      "password": "Test@5678",
+      "firstName": "Test",
+      "lastName": "User Two",
+      "role": "user"
+    },
+    {
+      "id": "admin-001",
+      "username": "admin",
+      "email": "admin@example.com",
+      "password": "Admin@1234",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "admin"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "email": "invalid-email",
+      "password": "short"
+    },
+    {
+      "email": "missing-password@example.com",
+      "password": ""
+    }
+  ]
+}
