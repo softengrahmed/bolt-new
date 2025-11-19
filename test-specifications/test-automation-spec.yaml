@@ -1,0 +1,365 @@
+# Test Automation Specification
+# Generated: 2025-11-19
+# Repository: https://github.com/softengrahmed/bolt-new
+
+project:
+  name: Bolt Test Automation
+  repository: bolt-new
+  owner: softengrahmed
+  application_type: Web Application (SPA/React)
+  framework: Remix + Vite
+  
+configuration:
+  execution:
+    strategy: Parallel
+    workers: 4
+    estimated_time: 15-20 minutes
+    retry_policy:
+      local: 2
+      ci: 0
+      staging: 1
+      production: 0
+  
+  browsers:
+    - name: Chromium
+      priority: 1
+      enabled: true
+      device: Desktop Chrome
+    - name: Firefox
+      priority: 2
+      enabled: true
+      device: Desktop Firefox
+    - name: WebKit
+      priority: 3
+      enabled: true
+      device: Desktop Safari
+  
+  organization:
+    strategy: Hybrid (layer/feature)
+    structure:
+      - e2e/smoke/
+      - e2e/critical/
+      - e2e/regression/
+  
+  test_data:
+    strategy: Hybrid (fixtures + factories)
+    fixtures:
+      - users.json
+      - test-data.json
+    factories:
+      - UserFactory (Faker)
+      - ProductFactory (Faker)
+      - CompanyFactory (Faker)
+  
+  reporting:
+    formats:
+      - HTML (primary)
+      - JSON
+      - JUnit XML
+      - Blob Report
+    features:
+      - Screenshots on failure
+      - Videos on first retry failure
+      - Trace viewer integration
+      - Performance metrics
+    notifications:
+      - GitHub PR comments
+      - CI/CD artifacts
+  
+  reliability:
+    features:
+      - Auto-retry on failure (configurable)
+      - Smart waits and assertions
+      - Test isolation
+      - Flaky test detection
+      - Automatic cleanup
+      - Configurable timeouts
+    timeouts:
+      global: 60000ms
+      navigation: 30000ms
+      action: 15000ms
+      expect: 10000ms
+  
+  environments:
+    - name: local
+      url: http://localhost:5173
+      workers: 4
+      retries: 2
+      test_types: [smoke, critical, regression]
+    
+    - name: staging
+      url: https://staging.example.com
+      workers: 2
+      retries: 1
+      test_types: [smoke, critical, regression]
+    
+    - name: production
+      url: https://app.example.com
+      workers: 1
+      retries: 0
+      test_types: [smoke]
+  
+  ci_cd:
+    platform: GitHub Actions
+    triggers:
+      - push: [main, develop]
+      - pull_request: [main, develop]
+      - schedule:
+          - cron: '0 * * * *'  # Hourly smoke tests
+          - cron: '0 2 * * *'  # Daily regression
+          - cron: '0 3 * * 0'  # Weekly full suite
+      - workflow_dispatch: manual
+    
+    workflows:
+      - name: test-execution-main.yaml
+        description: Main test workflow for PR and push
+        browsers: [chromium, firefox, webkit]
+        
+      - name: test-execution-smoke.yaml
+        description: Quick smoke tests
+        browsers: [chromium]
+        
+      - name: test-execution-scheduled.yaml
+        description: Scheduled regression tests
+        browsers: [chromium, firefox, webkit]
+
+architecture:
+  pattern: Page Object Model
+  
+  base_classes:
+    - BasePage:
+        file: tests/page-objects/base-page.ts
+        features:
+          - Navigation methods
+          - Smart wait strategies
+          - Screenshot utilities
+          - Error handling
+          - Custom assertions
+  
+  page_objects:
+    - HomePage:
+        file: tests/page-objects/pages/home-page.ts
+        extends: BasePage
+        features:
+          - Chat interaction
+          - Navigation
+          - Logo verification
+  
+  components:
+    - HeaderComponent:
+        file: tests/page-objects/components/header-component.ts
+        extends: BasePage
+        features:
+          - Header navigation
+          - User menu
+          - Settings access
+  
+  helpers:
+    - ApiHelper:
+        file: tests/helpers/api-helpers.ts
+        features:
+          - REST API calls
+          - Response validation
+          - Test data seeding
+    
+    - DataHelper:
+        file: tests/helpers/data-helpers.ts
+        features:
+          - Faker integration
+          - Fixture loading
+          - Dynamic data generation
+    
+    - AssertionHelper:
+        file: tests/helpers/assertion-helpers.ts
+        features:
+          - Custom assertions
+          - Retry logic
+          - Enhanced error messages
+    
+    - WaitHelper:
+        file: tests/helpers/wait-helpers.ts
+        features:
+          - Smart wait strategies
+          - Condition polling
+          - Network idle detection
+
+test_suites:
+  smoke:
+    description: Quick health check tests
+    execution_time: <5 minutes
+    frequency: Every commit
+    tests:
+      - health-check.spec.ts:
+          scenarios:
+            - Load home page successfully
+            - Display header components
+            - Have correct page title
+            - Display main UI elements
+            - Be responsive to viewport changes
+  
+  critical:
+    description: Essential user journey tests
+    execution_time: <15 minutes
+    frequency: Every PR
+    tests:
+      - user-interaction.spec.ts:
+          scenarios:
+            - Interact with chat interface
+            - Handle navigation actions
+            - Maintain state across interactions
+            - Handle rapid interactions
+            - Load and display dynamic content
+  
+  regression:
+    description: Comprehensive feature validation
+    execution_time: <60 minutes
+    frequency: Nightly
+    tests:
+      - full-workflow.spec.ts:
+          scenarios:
+            - Complete entire user journey
+            - Handle error scenarios gracefully
+            - Maintain performance under load
+            - Support browser back/forward navigation
+            - Handle multiple tab interactions
+
+dependencies:
+  runtime:
+    - '@playwright/test': ^1.48.2
+    - '@faker-js/faker': ^9.0.3
+    - 'dotenv': ^16.4.5
+  
+  dev:
+    - '@types/node': ^22.9.0
+    - '@typescript-eslint/eslint-plugin': ^8.14.0
+    - '@typescript-eslint/parser': ^8.14.0
+    - 'eslint': ^9.14.0
+    - 'prettier': ^3.3.3
+    - 'typescript': ^5.6.3
+
+file_structure:
+  tests/:
+    - e2e/:
+        - smoke/
+        - critical/
+        - regression/
+    - page-objects/:
+        - base-page.ts
+        - pages/
+        - components/
+    - helpers/:
+        - api-helpers.ts
+        - data-helpers.ts
+        - assertion-helpers.ts
+        - wait-helpers.ts
+    - fixtures/:
+        - users.json
+        - test-data.json
+    - config/:
+        - environments/
+    - reports/ (gitignored)
+    - test-results/ (gitignored)
+  
+  playwright-config/:
+    - playwright.config.ts
+    - playwright.staging.config.ts
+    - playwright.prod.config.ts
+  
+  .github/workflows/:
+    - test-execution-main.yaml
+    - test-execution-smoke.yaml
+    - test-execution-scheduled.yaml
+  
+  test-documentation/:
+    - README-TESTING.md
+    - CONTRIBUTING-TESTS.md
+    - DEBUGGING-GUIDE.md
+    - TEST-STRATEGY.md
+    - test-automation-specification-report.html
+  
+  test-specifications/:
+    - test-automation-spec.yaml
+    - test-coverage-matrix.md
+
+metrics:
+  estimated:
+    total_files: 40+
+    test_files: 3
+    page_objects: 2
+    components: 1
+    helpers: 4
+    configuration_files: 7
+    documentation_files: 5
+    ci_cd_workflows: 3
+  
+  execution:
+    smoke_duration: 5 minutes
+    critical_duration: 15 minutes
+    regression_duration: 60 minutes
+    full_suite_duration: 90 minutes
+  
+  coverage:
+    browsers: 3
+    environments: 3
+    test_layers: 3
+
+quality_standards:
+  code:
+    - TypeScript strict mode
+    - ESLint configuration
+    - Prettier formatting
+    - JSDoc comments
+    - DRY principle
+    - SOLID principles
+  
+  tests:
+    - Independent execution
+    - Clear naming
+    - Proper error messages
+    - No hard-coded waits
+    - Page Object Model usage
+    - Helper function usage
+
+maintenance:
+  review_schedule:
+    weekly:
+      - Identify flaky tests
+      - Review execution times
+      - Update brittle selectors
+    
+    monthly:
+      - Analyze coverage gaps
+      - Review test effectiveness
+      - Update documentation
+      - Refactor Page Objects
+    
+    quarterly:
+      - Strategy review
+      - Tool evaluation
+      - Performance optimization
+  
+  health_indicators:
+    - Test pass rate: ≥95%
+    - Flaky test rate: <5%
+    - Execution time: ≤20 minutes
+    - Coverage: Critical paths covered
+
+next_steps:
+  immediate:
+    - Install dependencies: pnpm install
+    - Install browsers: pnpm run install:browsers
+    - Run tests: pnpm test
+    - View report: pnpm run test:report
+  
+  customization:
+    - Update environment URLs
+    - Configure test credentials
+    - Add application-specific page objects
+    - Customize CI/CD triggers
+    - Set up notifications
+  
+  enhancement:
+    - Add visual regression testing
+    - Implement accessibility testing
+    - Expand API test coverage
+    - Add performance benchmarks
