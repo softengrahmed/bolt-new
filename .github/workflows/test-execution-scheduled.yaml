@@ -1,0 +1,90 @@
+name: Playwright Tests - Scheduled
+
+on:
+  schedule:
+    # Daily regression tests at 2 AM UTC
+    - cron: '0 2 * * *'
+    # Weekly full regression at Sunday 3 AM UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  scheduled-test:
+    name: Scheduled Regression Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - name: Install dependencies
+        run: |
+          pnpm install
+          cd tests && pnpm install
+      
+      - name: Install Playwright Browsers
+        run: cd tests && pnpm exec playwright install --with-deps ${{ matrix.browser }}
+      
+      - name: Run regression tests (Staging)
+        if: github.event.inputs.environment != 'production'
+        run: cd tests && pnpm run test:staging -- --project=${{ matrix.browser }}
+        env:
+          CI: true
+          STAGING_URL: ${{ secrets.STAGING_URL }}
+      
+      - name: Run smoke tests (Production)
+        if: github.event.inputs.environment == 'production'
+        run: cd tests && pnpm run test:prod -- --project=${{ matrix.browser }}
+        env:
+          CI: true
+          PRODUCTION_URL: ${{ secrets.PRODUCTION_URL }}
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduled-test-report-${{ matrix.browser }}
+          path: tests/reports/
+          retention-days: 30
+      
+      - name: Upload performance metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-metrics-${{ matrix.browser }}
+          path: tests/reports/*.json
+          retention-days: 90
+      
+      - name: Notify team on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('Scheduled tests failed! Notification should be sent to team.');
+            // Add Slack/Email notification logic here

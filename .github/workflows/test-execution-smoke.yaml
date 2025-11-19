@@ -1,0 +1,59 @@
+name: Playwright Tests - Smoke
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Run smoke tests every hour
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+    name: Run Smoke Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - name: Install dependencies
+        run: |
+          pnpm install
+          cd tests && pnpm install
+      
+      - name: Install Playwright Browsers
+        run: cd tests && pnpm exec playwright install --with-deps chromium
+      
+      - name: Run smoke tests
+        run: cd tests && pnpm run test:smoke --project=chromium
+        env:
+          CI: true
+          BASE_URL: ${{ secrets.STAGING_URL || 'https://staging.example.com' }}
+      
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-report
+          path: tests/reports/
+          retention-days: 7
+      
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('Smoke tests failed! Consider sending notifications to Slack/Email.');
