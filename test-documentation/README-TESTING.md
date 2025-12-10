@@ -1,0 +1,1 @@
+# Test Automation Package\n\n## Setup Instructions\n1. Clone the repository.\n2. Navigate to the project directory.\n3. Run `npm install` to install dependencies.\n\n## Running Tests\n- To run all tests: `npm test`\n- To run smoke tests: `npm run test:smoke`\n\n## Troubleshooting\n- Ensure Node.js version is 18+.\n- Check for any missing dependencies.
