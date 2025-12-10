@@ -1,0 +1,1 @@
+# Testing Strategy\n\n## Coverage Goals\n- Aim for 80% coverage on critical user journeys.\n\n## Execution Strategy\n- Run tests on every PR and main branch push.

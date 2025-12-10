@@ -1,0 +1,1 @@
+export class BasePage {\n    protected page;\n\n    constructor(page) {\n        this.page = page;\n    }\n\n    async navigateTo(url: string) {\n        await this.page.goto(url);\n    }\n\n    // Add more common methods here\n}

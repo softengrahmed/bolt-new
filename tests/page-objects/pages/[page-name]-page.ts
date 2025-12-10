@@ -1,0 +1,1 @@
+import { BasePage } from '../base-page';\n\nexport class [PageName]Page extends BasePage {\n    constructor(page) {\n        super(page);\n    }\n\n    // Add page-specific methods here\n}

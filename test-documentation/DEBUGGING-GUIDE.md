@@ -1,0 +1,1 @@
+# Debugging Guide\n\n## Common Issues\n- If tests fail, check the console output for errors.\n- Use `playwright test --debug` for debugging.

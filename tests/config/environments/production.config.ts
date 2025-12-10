@@ -1,0 +1,1 @@
+export const productionConfig = {\n    baseUrl: 'https://next.elitea.ai',\n    // Add more production-specific configurations here\n};
