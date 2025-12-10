@@ -1,0 +1,1 @@
+export const stagingConfig = {\n    baseUrl: 'https://staging.elitea.ai',\n    // Add more staging-specific configurations here\n};
