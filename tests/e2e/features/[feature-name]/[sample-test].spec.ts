@@ -1,0 +1,1 @@
+// Sample test for [feature-name]\nimport { test, expect } from '@playwright/test';\n\n// Define the test\ntest('Sample Test', async ({ page }) => {\n    await page.goto('https://next.elitea.ai');\n    // Add your test steps here\n    expect(await page.title()).toBe('Expected Title');\n});
